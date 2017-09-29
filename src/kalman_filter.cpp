@@ -32,19 +32,31 @@ void KalmanFilter::Update(const VectorXd &z) {
 }
 
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
-  VectorXd h_prime_x(3);
   float px = x_(0);
   float py = x_(1);
   float vx = x_(2);
   float vy = x_(3);
+
   float rho = sqrt(pow(px, 2) + pow(py, 2));
   float rho_dot = 0;
   if (fabs(rho) >= 0.0001) {
     // only divide when not by zero
     rho_dot = (px*vx + py*vy) / rho;
   }
+  float phi_raw = atan2(py, px);
+
+  VectorXd h_prime_x(3);
   h_prime_x << rho, atan2(py, px), rho_dot;
+
   VectorXd y = z - h_prime_x;
+
+  // ensure that phi is between -pi and pi
+  while (y[1] > M_PI) {
+    y[1] = y[1] - 2*M_PI;
+  }
+  while (y[1] < -M_PI) {
+    y[1] = y[1] + 2*M_PI;
+  }
   UpdateInternal(y);
 }
 
