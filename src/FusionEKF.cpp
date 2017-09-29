@@ -24,12 +24,12 @@ FusionEKF::FusionEKF() {
 
   //measurement covariance matrix - laser
   R_laser_ << 0.0225, 0,
-        0, 0.0225;
+              0, 0.0225;
 
   //measurement covariance matrix - radar
   R_radar_ << 0.09, 0, 0,
-        0, 0.0009, 0,
-        0, 0, 0.09;
+              0, 0.0009, 0,
+              0, 0, 0.09;
 
   // initialize Kalman filter
   ekf_ = KalmanFilter();
@@ -40,7 +40,6 @@ FusionEKF::FusionEKF() {
              0, 1, 0, 0,
              0, 0, 1000, 0,
              0, 0, 0, 1000;
-
 
   // laser measurement matrix
   H_laser_ = MatrixXd(2, 4);
@@ -53,9 +52,10 @@ FusionEKF::FusionEKF() {
 }
 
 /**
-* Destructor.
-*/
-FusionEKF::~FusionEKF() {}
+ * Destructor.
+ */
+FusionEKF::~FusionEKF() {
+}
 
 void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   /*****************************************************************************
@@ -90,7 +90,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    ****************************************************************************/
 
   // Update the state transition matrix F according to the new elapsed time.
-  float timeDelta = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; //dt - expressed in seconds
+  float timeDelta = (measurement_pack.timestamp_ - previous_timestamp_)
+      / 1000000.0;  //dt - expressed in seconds
   previous_timestamp_ = measurement_pack.timestamp_;
 
   ekf_.F_ << 1, 0, timeDelta, 0,
@@ -107,10 +108,10 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   float noise_ax = 9;
   float noise_ay = 9;
 
-  ekf_.Q_ << timeDelta4*noise_ax/4, 0, timeDelta3*noise_ax/2, 0,
-             0, timeDelta4*noise_ay/4, 0, timeDelta3*noise_ay/2,
-             timeDelta3*noise_ax/2, 0, timeDelta2*noise_ax, 0,
-             0, timeDelta3*noise_ay/2, 0, timeDelta2*noise_ay;
+  ekf_.Q_ << timeDelta4 * noise_ax / 4, 0, timeDelta3 * noise_ax / 2, 0, 0,
+             timeDelta4 * noise_ay / 4, 0, timeDelta3 * noise_ay / 2,
+             timeDelta3 * noise_ax / 2, 0, timeDelta2 * noise_ax, 0,
+             0, timeDelta3 * noise_ay / 2, 0, timeDelta2 * noise_ay;
 
   ekf_.Predict();
 

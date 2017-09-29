@@ -6,9 +6,11 @@ using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
-KalmanFilter::KalmanFilter() {}
+KalmanFilter::KalmanFilter() {
+}
 
-KalmanFilter::~KalmanFilter() {}
+KalmanFilter::~KalmanFilter() {
+}
 
 void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
                         MatrixXd &H_in, MatrixXd &R_in, MatrixXd &Q_in) {
@@ -41,7 +43,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   float rho_dot = 0;
   if (fabs(rho) >= 0.0001) {
     // only divide when not by zero
-    rho_dot = (px*vx + py*vy) / rho;
+    rho_dot = (px * vx + py * vy) / rho;
   }
   float phi_raw = atan2(py, px);
 
@@ -52,10 +54,10 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
 
   // ensure that phi is between -pi and pi
   while (y[1] > M_PI) {
-    y[1] = y[1] - 2*M_PI;
+    y[1] = y[1] - 2 * M_PI;
   }
   while (y[1] < -M_PI) {
-    y[1] = y[1] + 2*M_PI;
+    y[1] = y[1] + 2 * M_PI;
   }
   UpdateInternal(y);
 }
