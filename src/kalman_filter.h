@@ -3,7 +3,7 @@
 #include "Eigen/Dense"
 
 class KalmanFilter {
-public:
+ public:
 
   // state vector
   Eigen::VectorXd x_;
@@ -63,6 +63,10 @@ public:
    * @param z The measurement at k+1
    */
   void UpdateEKF(const Eigen::VectorXd &z);
+
+ private:
+  // common update bits
+  void UpdateInternal(const Eigen::VectorXd &y);
 
 };
 

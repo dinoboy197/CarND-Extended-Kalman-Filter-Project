@@ -27,6 +27,28 @@ void KalmanFilter::Predict() {
 
 void KalmanFilter::Update(const VectorXd &z) {
   VectorXd y = z - H_ * x_;
+
+  UpdateInternal(y);
+}
+
+void KalmanFilter::UpdateEKF(const VectorXd &z) {
+  VectorXd h_prime_x(3);
+  float px = x_(0);
+  float py = x_(1);
+  float vx = x_(2);
+  float vy = x_(3);
+  float rho = sqrt(pow(px, 2) + pow(py, 2));
+  float rho_dot = 0;
+  if (fabs(rho) >= 0.0001) {
+    // only divide when not by zero
+    rho_dot = (px*vx + py*vy) / rho;
+  }
+  h_prime_x << rho, atan2(py, px), rho_dot;
+  VectorXd y = z - h_prime_x;
+  UpdateInternal(y);
+}
+
+void KalmanFilter::UpdateInternal(const VectorXd &y) {
   MatrixXd Ht = H_.transpose();
   MatrixXd S_ = H_ * P_ * Ht + R_;
   MatrixXd K_ = P_ * Ht * S_.inverse();
@@ -34,11 +56,4 @@ void KalmanFilter::Update(const VectorXd &z) {
   long x_size = x_.size();
   MatrixXd I = MatrixXd::Identity(x_size, x_size);
   P_ = (I - K_ * H_) * P_;
-}
-
-void KalmanFilter::UpdateEKF(const VectorXd &z) {
-  /**
-  TODO:
-    * update the state by using Extended Kalman Filter equations
-  */
 }
