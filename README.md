@@ -85,6 +85,6 @@ To test the sensor fusion using the extended Kalman filter, the simulator provid
 
 ![Kalman filter tracking][tracking]
 
-[Click here to view a video of the tracking](video.mkv).
+[Click here to view a video of the tracking](video.mp4).
 
 Clearly, the green position estimation based on the sensor fusion tracks very closely to the vehicle location, even with imprecise measurements from the lidar and radar inputs (both by visual inspection and by the low RMSE.) Success!
