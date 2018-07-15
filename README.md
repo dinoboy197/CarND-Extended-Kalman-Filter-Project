@@ -41,7 +41,7 @@ This repository contains an extended Kalman filter implementation which estimate
 * [FusionEKF.cpp](src/FusionEKF.cpp) - sensor fusion module
 * [kalman_filter.cpp](src/kalman_filter.cpp) - Kalman predict method and update methods for radar and lidar
 * [tools.cpp](src/tools.cpp) - mathematical utility methods (RMSE, Jacobian)
-* [video.mkv](video.mkv) - video of predicted location of vehicle in simulator based on extended Kalm filtering
+* [video.mp4](video.mp4) - video of predicted location of vehicle in simulator based on extended Kalman filtering
 
 ## Running code from this repository
 
